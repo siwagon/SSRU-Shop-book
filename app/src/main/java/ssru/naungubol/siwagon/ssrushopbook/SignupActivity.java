@@ -1,7 +1,10 @@
 package ssru.naungubol.siwagon.ssrushopbook;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -22,7 +25,7 @@ public class SignupActivity extends AppCompatActivity {
             userEditText, passwordEditText;
     private String nameString, surnameString,
             userString, passwordString;
-    private static final String urlUpload = "http://swiftcodingthai.com/ssru/add_user_master.php";
+    private static final String urlUpload = "http://swiftcodingthai.com/ssru/add_user_siwagon.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +55,39 @@ public class SignupActivity extends AppCompatActivity {
             MyAlert myAlert = new MyAlert();
             myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่องจ๊ะ");
 
+        } else if (checkUser()) {
+            //User ซ้ำ
+            MyAlert myAlert = new MyAlert();
+            myAlert.myDialog(this, "User ซ้ำ", "กรุณาเปลี่ยน User ใหม่") ;
+
         } else {
-            //No Space
+
             uploadNewUser();
 
         }
 
 
     }   // clickSign
+
+    private boolean checkUser() {
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(MyOpenHelper.database_name,
+                    MODE_PRIVATE, null);
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM userTABLE WHERE User = " + "'" + userString + "'", null);
+            cursor.moveToFirst();
+
+            Log.d("31May", "Have " + cursor.getString(3));
+
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+
+    }
 
     private void uploadNewUser() {
 
