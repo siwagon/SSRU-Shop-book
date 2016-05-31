@@ -50,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
                 userString.equals("") || passwordString.equals("")) {
             //Have Space
             MyAlert myAlert = new MyAlert();
-            myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่อง คะ");
+            myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่องจ๊ะ");
 
         } else {
             //No Space
