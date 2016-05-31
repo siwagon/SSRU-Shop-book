@@ -22,7 +22,7 @@ public class SignupActivity extends AppCompatActivity {
             userEditText, passwordEditText;
     private String nameString, surnameString,
             userString, passwordString;
-    private static final String urlUpload = "http://swiftcodingthai.com/ssru/php_add_siwagon.php";
+    private static final String urlUpload = "http://swiftcodingthai.com/ssru/add_user_master.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
                 .add("Password", passwordString)
                 .build();
         Request.Builder builder = new Request.Builder();
-        Request request = builder.url("http://swiftcodingthai.com/ssru/php_add_siwagon.php").post(requestBody).build();
+        Request request = builder.url(urlUpload).post(requestBody).build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
