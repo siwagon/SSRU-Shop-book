@@ -20,10 +20,10 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Explicit
+    //Explicit
     private MyManage myManage;
     private static final String urlJSON = "http://swiftcodingthai.com/ssru/get_user_siwagon.php";
-    private EditText userEdittext, passwordEditText;
+    private EditText userEditText, passwordEditText;
     private String userString, passwordString;
     private String[] loginStrings;
 
@@ -32,17 +32,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Blind Widget
-        userEdittext = (EditText) findViewById(R.id.editText5);
+        //Bind Widget
+        userEditText = (EditText) findViewById(R.id.editText5);
         passwordEditText = (EditText) findViewById(R.id.editText6);
 
 
-        // Request SQLite
+        //Request SQLite
         myManage = new MyManage(MainActivity.this);
 
-        // Test Add Value to SQLite
+        //Test Add Value to SQLite
         //myManage.addNewUser("name", "sur", "user", "pass", "money");
-        
+
         //Delete All userTABLE
         deleteAlluserTABLE();
 
@@ -61,22 +61,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickSignIn(View view) {
 
-        userString = userEdittext.getText().toString().trim();
+        userString = userEditText.getText().toString().trim();
         passwordString = passwordEditText.getText().toString().trim();
 
         //Check Space
         if (userString.equals("") || passwordString.equals("")) {
 
             MyAlert myAlert = new MyAlert();
-            myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่องจ๊ะ");
+            myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่อง จ๊ะ");
 
         } else {
-            checkUserAndPassword();
+            checkUserAnPassword();
         }
 
     }   // clickSignIn
 
-    private void checkUserAndPassword() {
+    private void checkUserAnPassword() {
 
         try {
 
@@ -97,24 +97,30 @@ public class MainActivity extends AppCompatActivity {
             //Check Password
             if (passwordString.equals(loginStrings[4])) {
                 //Password True
+                Intent intent = new Intent(MainActivity.this, ProductListView.class);
+                intent.putExtra("Login", loginStrings);
+                startActivity(intent);
+
                 Toast.makeText(this, "ยินดีต้อนรับ " + loginStrings[1] + " " + loginStrings[2],
                         Toast.LENGTH_SHORT).show();
+
+                finish();
 
             } else {
                 //Password False
                 MyAlert myAlert = new MyAlert();
-                myAlert.myDialog(this, "รหัสผ่านผิด", "กรุณากรอกรหัสผ่านใหม่อีกครั้ง");
+                myAlert.myDialog(this, "รหัสผ่านผิด", "กรุณากรอกรหัสผ่านใหม่");
             }
 
 
         } catch (Exception e) {
 
             MyAlert myAlert = new MyAlert();
-            myAlert.myDialog(this, "ไม่มี User นี้", "ไม่มี " + userString + "ในฐานข้อมูลของเรา");
+            myAlert.myDialog(this, "ไม่มี User นี่้", "ไม่มี " + userString + " ในฐานข้อมูลของเรา");
 
         }
 
-    }
+    }   // check
 
 
     private void synJSONtoSQLite() {
@@ -124,9 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
     public class ConnectedUserTABLE extends AsyncTask<Void, Void, String> {
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(Void... voids) {
 
             try {
+
                 OkHttpClient okHttpClient = new OkHttpClient();
                 Request.Builder builder = new Request.Builder();
                 Request request = builder.url(urlJSON).build();
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-        }   // doTnBack
+        }   // doInBack
 
         @Override
         protected void onPostExecute(String s) {
@@ -162,13 +169,14 @@ public class MainActivity extends AppCompatActivity {
                             strPassword, strMoney);
                 }   // for
 
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }   // onPost
 
-    }   //Connect Class
+    }   // Connect Class
 
 
     private void deleteAlluserTABLE() {
@@ -177,10 +185,10 @@ public class MainActivity extends AppCompatActivity {
                 MODE_PRIVATE, null);
         sqLiteDatabase.delete(MyManage.user_table, null, null);
 
-    }
+    }   // delete
 
     public void clickSignUpMain(View view) {
-        startActivity(new Intent(MainActivity.this,SignupActivity.class));
+        startActivity(new Intent(MainActivity.this, SignupActivity.class));
     }
 
 }   // Main Class
